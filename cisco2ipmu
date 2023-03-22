@@ -1,0 +1,16 @@
+#!/usr/bin/expect
+# Conenct to IPMU with vpn by Cisco
+
+spawn /opt/cisco/anyconnect/bin/vpn -s connect IPMU
+
+# read username and password
+set username [exec readpassword ciscouser]
+set password [exec readpassword ciscopass]
+
+expect "Group: \\\[Remote_User\\\]" {send "\r" }
+expect "Username: " { send "$username\r" }
+expect "Password: " { send "$password\r" }
+expect "accept? \\\[y/n\\\]:" { send "y\r" }
+
+set timeout 60
+expect "VPN>"
